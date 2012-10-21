@@ -1,0 +1,36 @@
+;  fib = function(n) {
+;    if(n - 2 < 0) {
+;      return 1
+;    }
+;    v1 = fib(n - 1)
+;    v2 = fib(n - 2)
+;    return v1 + v2
+;  }
+
+mark main
+  push 35
+  call fib
+  putn
+  push 10
+  putc
+  end
+
+mark fib
+  duplicate                ; (n, n)
+  push -2                  ; (-2, n, n)
+  add                      ; (n - 2, n)
+  jump-if-negative ifbody
+  jump body
+mark ifbody                ; (n)
+  return
+mark body                  ; (n)
+  duplicate                ; (n, n)
+  push -1                  ; (-1, n, n)
+  add                      ; (n - 1, n)
+  call fib                 ; (fib[n-1], n)
+  swap                     ; (n, fib[n-1])
+  push -2                  ; (-2, n, fib[n-1])
+  add                      ; (n - 2, fib[n-1])
+  call fib                 ; (fib[n-2], fib[n-1])
+  add                      ; (fib[n-2] + fib[n-1])
+  return
