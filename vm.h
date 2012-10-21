@@ -16,5 +16,6 @@ typedef struct VM_T VM;
 VM* vm_create();
 void vm_delete(VM* vm);
 void vm_run(VM* vm, Program* prog);
+void vm_fast_run(VM* vm, Program* prog);
 
 #endif /* _VM_H_ */

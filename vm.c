@@ -154,3 +154,164 @@ void vm_run(VM* vm, Program* prog)
     pc += 1;
   }
 }
+
+void vm_fast_run(VM* vm, Program* prog)
+{
+  vm->prog = prog;
+  Command* commands = prog->commands;
+  Command c;
+  Stack* data_stack = vm->data_stack;
+  Stack* call_stack = vm->call_stack;
+  int pc = 0, v1, v2, val, l;
+
+#define ARR_ADD(x) arr[x] = && L_ ## x;
+  void* arr[64];
+  ARR_ADD(PUSH);
+  ARR_ADD(DUPLICATE);
+  ARR_ADD(COPY);
+  ARR_ADD(SWAP);
+  ARR_ADD(DISCARD);
+  ARR_ADD(SLIDE);
+  ARR_ADD(ADD);
+  ARR_ADD(SUB);
+  ARR_ADD(MUL);
+  ARR_ADD(DIV);
+  ARR_ADD(MOD);
+  ARR_ADD(STORE);
+  ARR_ADD(RETRIEVE);
+  ARR_ADD(MARK);
+  ARR_ADD(CALL);
+  ARR_ADD(JUMP);
+  ARR_ADD(JUMPIFZERO);
+  ARR_ADD(JUMPIFNEGATIVE);
+  ARR_ADD(RETURN);
+  ARR_ADD(END);
+  ARR_ADD(PUTC);
+  ARR_ADD(PUTN);
+  ARR_ADD(READC);
+  ARR_ADD(READN);
+#undef ARR_ADD
+
+  while(1) {
+    c = commands[pc];
+    goto *arr[c.op];
+      
+    /* Stack Manipulation */
+    L_PUSH:
+      stack_push(data_stack, c.param);
+      goto L_C_NEXT;
+    L_DUPLICATE:
+      val = stack_pop(data_stack);
+      stack_push(data_stack, val);
+      stack_push(data_stack, val);
+      goto L_C_NEXT;
+    L_COPY:
+      printf("No implemented Error.");
+      goto L_C_NEXT;
+    L_SWAP:
+      v1 = stack_pop(data_stack);
+      v2 = stack_pop(data_stack);
+      stack_push(data_stack, v1);
+      stack_push(data_stack, v2);
+      goto L_C_NEXT;
+    L_DISCARD:
+      stack_pop(data_stack);
+      goto L_C_NEXT;
+    L_SLIDE:
+      printf("No implemented Error.");
+      goto L_C_NEXT;
+
+    /* Srithmetic */
+    L_ADD:
+      v1 = stack_pop(data_stack);
+      v2 = stack_pop(data_stack);
+      val = v1 + v2;
+      stack_push(data_stack, val);
+      goto L_C_NEXT;
+    L_SUB:
+      v1 = stack_pop(data_stack);
+      v2 = stack_pop(data_stack);
+      val = v1 - v2;
+      stack_push(data_stack, val);
+      goto L_C_NEXT;
+    L_MUL:
+      v1 = stack_pop(data_stack);
+      v2 = stack_pop(data_stack);
+      val = v1 * v2;
+      stack_push(data_stack, val);
+      goto L_C_NEXT;
+    L_DIV:
+      v1 = stack_pop(data_stack);
+      v2 = stack_pop(data_stack);
+      val = v1 / v2;
+      stack_push(data_stack, val);
+      goto L_C_NEXT;
+    L_MOD:
+      v1 = stack_pop(data_stack);
+      v2 = stack_pop(data_stack);
+      val = v1 % v2;
+      stack_push(data_stack, val);
+      goto L_C_NEXT;
+
+    /* Heap Access */
+    L_STORE:
+      v1 = stack_pop(data_stack);
+      v2 = stack_pop(data_stack);
+      vm->heap[v2] = v1;
+      goto L_C_NEXT;
+    L_RETRIEVE:
+      v1 = stack_pop(data_stack);
+      val = vm->heap[v1];
+      stack_push(data_stack, val);
+      goto L_C_NEXT;
+
+    /* Flow Control */
+    L_MARK:
+      goto L_C_NEXT;
+    L_CALL:
+      stack_push(call_stack, pc);
+      pc = c.param;
+      goto L_C_NEXT;
+    L_JUMP:
+      pc = c.param;
+      goto L_C_NEXT;
+    L_JUMPIFZERO:
+      l = c.param;
+      v1 = stack_pop(data_stack);
+      if(v1 == 0) {
+        pc = l;
+      }
+      goto L_C_NEXT;
+    L_JUMPIFNEGATIVE:
+      l = c.param;
+      v1 = stack_pop(data_stack);
+      if(v1 < 0) {
+        pc = l;
+      }
+      goto L_C_NEXT;
+    L_RETURN:
+      pc = stack_pop(call_stack);
+      goto L_C_NEXT;
+    L_END:
+      return;
+
+    /* I/O */
+    L_PUTC:
+      v1 = stack_pop(data_stack);
+      printf("%c", v1);
+      goto L_C_NEXT;
+    L_PUTN:
+      v1 = stack_pop(data_stack);
+      printf("%d", v1);
+      goto L_C_NEXT;
+    L_READC:
+      printf("No implemented Error.");
+      goto L_C_NEXT;
+    L_READN:
+      printf("No implemented Error.");
+      goto L_C_NEXT;
+
+  L_C_NEXT:
+    pc += 1;
+  }
+}

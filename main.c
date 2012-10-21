@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
   program_replace_label(program);
   program_print(program);
   VM* vm = vm_create();
-  vm_run(vm, program);
+  vm_fast_run(vm, program);
   return 0;
 }
 
