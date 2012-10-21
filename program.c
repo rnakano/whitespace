@@ -53,94 +53,40 @@ void program_print(Program* program)
 void command_string(Command command, char* s)
 {
 #define ITOA(x, c) sprintf(c, "%d", x)
+#define OP(x) case x: op = #x; break
+#define OPP(x) case x: op = #x; ITOA(command.param, val); break
   char *op;
   char val[32];
   memset(val, '\0', 32);
   switch(command.op) {
-  case PUSH:
-    op = "PUSH";
-    ITOA(command.param, val);
-    break;
-  case DUPLICATE:
-    op = "DUPLICATE";
-    break;
-  case COPY:
-    op = "COPY";
-    ITOA(command.param, val);
-    break;
-  case SWAP:
-    op = "SWAP";
-    break;
-  case DISCARD:
-    op = "DISCARD";
-    break;
-  case SLIDE:
-    op = "SLIDE";
-    ITOA(command.param, val);
-    break;
+    OPP(PUSH);
+    OP(DUPLICATE);
+    OP(COPY);
+    OP(SWAP);
+    OP(DISCARD);
+    OPP(SLIDE);
 
-  case ADD:
-    op = "ADD";
-    break;
-  case SUB:
-    op = "SUB";
-    break;
-  case MUL:
-    op = "MUL";
-    break;
-  case DIV:
-    op = "DIV";
-    break;
-  case MOD:
-    op = "MOD";
-    break;
+    OP(ADD);
+    OP(SUB);
+    OP(MUL);
+    OP(DIV);
+    OP(MOD);
 
-  case STORE:
-    op = "STORE";
-    break;
-  case RETRIEVE:
-    op = "RETRIEVE";
-    break;
+    OP(STORE);
+    OP(RETRIEVE);
 
-  case MARK:
-    op = "MARK";
-    ITOA(command.param, val);
-    break;
-  case CALL:
-    op = "CALL";
-    ITOA(command.param, val);
-    break;
-  case JUMP:
-    op = "JUMP";
-    ITOA(command.param, val);
-    break;
-  case JUMPIFZERO:
-    op = "JUMPIFZERO";
-    ITOA(command.param, val);
-    break;
-  case JUMPIFNEGATIVE:
-    op = "JUMPIFNEGATIVE";
-    ITOA(command.param, val);
-    break;
-  case RETURN:
-    op = "RETURN";
-    break;
-  case END:
-    op = "END";
-    break;
+    OPP(MARK);
+    OPP(CALL);
+    OPP(JUMP);
+    OPP(JUMPIFZERO);
+    OPP(JUMPIFNEGATIVE);
+    OP(RETURN);
+    OP(END);
 
-  case PUTC:
-    op = "PUTC";
-    break;
-  case PUTN:
-    op = "PUTN";
-    break;
-  case READC:
-    op = "READC";
-    break;
-  case READN:
-    op = "READN";
-    break;
+    OP(PUTC);
+    OP(PUTN);
+    OP(READC);
+    OP(READN);
   }
 
   sprintf(s, "%s %s", op, val);
