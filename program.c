@@ -37,6 +37,19 @@ int program_search_label(Program* program, int label)
   return -1;
 }
 
+void program_replace_label(Program* program)
+{
+  int i;
+  for(i = 0; i < program->size; i++)
+  {
+    enum Operation op = program->commands[i].op;
+    if(op == CALL || op == JUMP || op == JUMPIFZERO || op == JUMPIFNEGATIVE) {
+      int pc = program_search_label(program, program->commands[i].param);
+      program->commands[i].param = pc;
+    }
+  }
+}
+
 void command_string(Command command, char* s);
 
 void program_print(Program* program)

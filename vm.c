@@ -109,20 +109,20 @@ void vm_run(VM* vm, Program* prog)
       break;
     case CALL:
       stack_push(call_stack, pc);
-      pc = program_search_label(prog, c.param);
+      pc = c.param;
       break;
     case JUMP:
-      pc = program_search_label(prog, c.param);
+      pc = c.param;
       break;
     case JUMPIFZERO:
-      l = program_search_label(prog, c.param);
+      l = c.param;
       v1 = stack_pop(data_stack);
       if(v1 == 0) {
         pc = l;
       }
       break;
     case JUMPIFNEGATIVE:
-      l = program_search_label(prog, c.param);
+      l = c.param;
       v1 = stack_pop(data_stack);
       if(v1 < 0) {
         pc = l;

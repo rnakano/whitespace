@@ -18,5 +18,6 @@ Program* program_insert_last(Program* program, Command command);
 void program_print(Program* program);
 void program_print(Program* program);
 int program_search_label(Program* program, int label);
+void program_replace_label(Program* program);
 
 #endif /* _PROGRAM_H_ */
