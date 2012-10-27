@@ -46,6 +46,7 @@ int parse_number(char** c)
     sign = -1;
   } else {
     error_parse("Number format: sign part is [LF].");
+    return -1;
   }
 
   int num = 0;
