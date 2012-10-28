@@ -19,5 +19,6 @@ void program_print(Program* program);
 void program_print(Program* program);
 int program_search_label(Program* program, int label);
 void program_replace_label(Program* program);
+void program_optimize(Program* program);
 
 #endif /* _PROGRAM_H_ */

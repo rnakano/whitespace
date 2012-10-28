@@ -5,7 +5,10 @@ enum Operation {PUSH, DUPLICATE, COPY, SWAP, DISCARD, SLIDE,
                 ADD, SUB, MUL, DIV, MOD,
                 STORE, RETRIEVE,
                 MARK, CALL, JUMP, JUMPIFZERO, JUMPIFNEGATIVE, RETURN, END,
-                PUTC, PUTN, READC, READN};
+                PUTC, PUTN, READC, READN,
+                /* Optimize operation */
+                PUSH_ADD, NOP
+};
 
 struct Command_T {
   enum Operation op;

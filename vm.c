@@ -162,7 +162,7 @@ void vm_fast_run(VM* vm, Program* prog)
   Command c;
   Stack* data_stack = vm->data_stack;
   Stack* call_stack = vm->call_stack;
-  int pc = 0, v1, v2, val, l;
+  int pc = 0, v1, v2, val, l, *ip;
 
 #define ARR_ADD(x) arr[x] = && L_ ## x;
   void* arr[64];
@@ -190,6 +190,7 @@ void vm_fast_run(VM* vm, Program* prog)
   ARR_ADD(PUTN);
   ARR_ADD(READC);
   ARR_ADD(READN);
+  ARR_ADD(PUSH_ADD);
 #undef ARR_ADD
 
   while(1) {
@@ -311,6 +312,12 @@ void vm_fast_run(VM* vm, Program* prog)
       goto L_C_NEXT;
     L_READN:
       printf("No implemented Error.");
+      goto L_C_NEXT;
+
+    /* Optimize */
+    L_PUSH_ADD:
+      ip = stack_topp(data_stack);
+      *ip = *ip + c.param;
       goto L_C_NEXT;
 
   L_C_NEXT:

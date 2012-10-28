@@ -50,6 +50,24 @@ void program_replace_label(Program* program)
   }
 }
 
+void program_optimize(Program* program)
+{
+  int i, size = program->size;
+  for(i = 0; i < size - 1; i++)
+  {
+    enum Operation op1 = program->commands[i].op;
+    enum Operation op2 = program->commands[i+1].op;
+    if(op1 == PUSH && op2 == ADD) {
+      program->commands[i].op = PUSH_ADD;
+      program->commands[i].param = program->commands[i].param;
+      program->commands[i+1].op = NOP;
+      memmove(&(program->commands[i+1]), &(program->commands[i+2]), sizeof(*(program->commands)) * (size - i - 1));
+      size--;
+    }
+  }
+  program->size = size;
+}
+
 void command_string(Command command, char* s);
 
 void program_print(Program* program)
@@ -100,6 +118,9 @@ void command_string(Command command, char* s)
     OP(PUTN);
     OP(READC);
     OP(READN);
+
+    OPP(PUSH_ADD);
+    OP(NOP);
   }
 
   sprintf(s, "%s %s", op, val);

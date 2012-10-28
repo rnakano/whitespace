@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
   Program* program = program_create();
   char **s =  &code;
   program = parse(program, s);
+  program_optimize(program);
   program_replace_label(program);
   program_print(program);
   VM* vm = vm_create();
