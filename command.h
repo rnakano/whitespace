@@ -7,7 +7,7 @@ enum Operation {PUSH, DUPLICATE, COPY, SWAP, DISCARD, SLIDE,
                 MARK, CALL, JUMP, JUMPIFZERO, JUMPIFNEGATIVE, RETURN, END,
                 PUTC, PUTN, READC, READN,
                 /* Optimize operation */
-                PUSH_ADD, NOP
+                PUSH_ADD, DUPLICATE_PUSH_ADD, NOP
 };
 
 struct Command_T {

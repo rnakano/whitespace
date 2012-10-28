@@ -191,6 +191,8 @@ void vm_fast_run(VM* vm, Program* prog)
   ARR_ADD(READC);
   ARR_ADD(READN);
   ARR_ADD(PUSH_ADD);
+  ARR_ADD(DUPLICATE_PUSH_ADD);
+  ARR_ADD(NOP);
 #undef ARR_ADD
 
   while(1) {
@@ -315,9 +317,15 @@ void vm_fast_run(VM* vm, Program* prog)
       goto L_C_NEXT;
 
     /* Optimize */
+    L_NOP:
+      goto L_C_NEXT;
     L_PUSH_ADD:
       ip = stack_topp(data_stack);
       *ip = *ip + c.param;
+      goto L_C_NEXT;
+    L_DUPLICATE_PUSH_ADD:
+      v1 = stack_top(data_stack);
+      stack_push(data_stack, v1 + c.param);
       goto L_C_NEXT;
 
   L_C_NEXT:
