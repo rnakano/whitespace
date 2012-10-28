@@ -213,6 +213,7 @@ void vm_fast_run(VM* vm, Program* prog)
       v2 = stack_pop(data_stack);
       stack_push(data_stack, v1);
       stack_push(data_stack, v2);
+      /* stack_swap(data_stack); */
       goto L_C_NEXT;
     L_DISCARD:
       stack_pop(data_stack);
@@ -221,12 +222,13 @@ void vm_fast_run(VM* vm, Program* prog)
       printf("No implemented Error.");
       goto L_C_NEXT;
 
-    /* Srithmetic */
+    /* Arithmetic */
     L_ADD:
-      v1 = stack_pop(data_stack);
-      v2 = stack_pop(data_stack);
-      val = v1 + v2;
-      stack_push(data_stack, val);
+      /* v1 = stack_pop(data_stack); */
+      /* v2 = stack_pop(data_stack); */
+      /* val = v1 + v2; */
+      /* stack_push(data_stack, val); */
+      stack_add(data_stack);
       goto L_C_NEXT;
     L_SUB:
       v1 = stack_pop(data_stack);
