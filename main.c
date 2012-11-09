@@ -5,6 +5,8 @@
 #include "parse.h"
 #include "vm.h"
 
+#define PROGRAM_MAX_BYTE 16000
+
 int main(int argc, char *argv[])
 {
   struct option long_options[] = {
@@ -19,8 +21,7 @@ int main(int argc, char *argv[])
   int code_print = 0;
   int use_switchcase = 1, use_goto = 0;
   int use_program_optimize = 0;
-  while((opt = getopt_long(argc, argv, "csgo", long_options, &option_index)) != -1)
-  {
+  while((opt = getopt_long(argc, argv, "csgo", long_options, &option_index)) != -1) {
     switch(opt){
     case 'c':
       code_print = 1;
@@ -44,7 +45,8 @@ int main(int argc, char *argv[])
   }
 
   char c;
-  char* code = (char*) malloc (16000);
+  char* code = (char*) malloc(PROGRAM_MAX_BYTE);
+  char* code_scopy = code;
   int i = 0;
   while((c = getchar()) != -1) {
     if(c == ' ' || c == '\t' || c == '\n') {
@@ -56,10 +58,13 @@ int main(int argc, char *argv[])
   Program* program = program_create();
   char **s =  &code;
   program = parse(program, s);
+
   if(use_program_optimize) {
     program_optimize(program);
   }
+
   program_replace_label(program);
+
   if(code_print) {
     program_print(program);
     return 0;
@@ -75,6 +80,7 @@ int main(int argc, char *argv[])
 
   program_delete(program);
   vm_delete(vm);
+  free(code_scopy);
 
   return 0;
 }
