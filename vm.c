@@ -20,6 +20,16 @@ void vm_delete(VM* vm)
   free(vm);
 }
 
+inline void heap_store(VM* vm, int addr, int val)
+{
+  vm->heap[addr] = val;
+}
+
+inline int heap_retrieve(VM* vm, int addr)
+{
+  return vm->heap[addr];
+}
+
 #define POP2VALS(v1, v2, s) (v1 = stack_pop(s) && v2 = stack_pop(s))
 
 void vm_run(VM* vm, Program* prog)
@@ -96,11 +106,11 @@ void vm_run(VM* vm, Program* prog)
     case STORE:
       v1 = stack_pop(data_stack);
       v2 = stack_pop(data_stack);
-      vm->heap[v2] = v1;
+      heap_store(vm, v2, v1);
       break;
     case RETRIEVE:
       v1 = stack_pop(data_stack);
-      val = vm->heap[v1];
+      val = heap_retrieve(vm, v1);
       stack_push(data_stack, val);
       break;
 
@@ -274,11 +284,11 @@ void vm_fast_run(VM* vm, Program* prog)
     L_STORE:
       v1 = stack_pop(data_stack);
       v2 = stack_pop(data_stack);
-      vm->heap[v2] = v1;
+      heap_store(vm, v2, v1);
       goto L_C_NEXT;
     L_RETRIEVE:
       v1 = stack_pop(data_stack);
-      val = vm->heap[v1];
+      val = heap_retrieve(vm, v1);
       stack_push(data_stack, val);
       goto L_C_NEXT;
 
