@@ -1,0 +1,132 @@
+mark main
+  call print-bmp-header
+  call print-white-data
+  end
+
+mark print-white-data
+  push 800
+  push 640
+  mul
+  push 3
+  mul
+mark print-loop-start
+  duplicate
+  jump-if-zero print-loop-end
+  push 128
+  putc  
+  push -1
+  add
+  jump print-loop-start
+mark print-loop-end
+  return
+
+mark print-bmp-header
+  push 66
+  putc
+  push 77
+  putc
+  push 54
+  putc
+  push 112
+  putc
+  push 23
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 54
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 40
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 32
+  putc
+  push 3
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 128
+  putc
+  push 2
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 1
+  putc
+  push 0
+  putc
+  push 24
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 112
+  putc
+  push 23
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  push 0
+  putc
+  return
