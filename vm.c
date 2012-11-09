@@ -29,7 +29,7 @@ void vm_run(VM* vm, Program* prog)
   Command c;
   Stack* data_stack = vm->data_stack;
   Stack* call_stack = vm->call_stack;
-  int pc = 0, v1, v2, val, l;
+  int pc = 0, v1, v2, val, l, *ip;
 
   while(1) {
     c = commands[pc];
@@ -148,6 +148,18 @@ void vm_run(VM* vm, Program* prog)
       break;
     case READN:
       printf("No implemented Error.");
+      break;
+
+    /* Optimize */
+    case NOP:
+      break;
+    case PUSH_ADD:
+      ip = stack_topp(data_stack);
+      *ip = *ip + c.param;
+      break;
+    case DUPLICATE_PUSH_ADD:
+      v1 = stack_top(data_stack);
+      stack_push(data_stack, v1 + c.param);
       break;
     }
 
