@@ -70,7 +70,7 @@ void vm_run(VM* vm, Program* prog)
       printf("No implemented Error.");
       break;
 
-    /* Srithmetic */
+    /* Arithmetic */
     case ADD:
       v1 = stack_pop(data_stack);
       v2 = stack_pop(data_stack);
